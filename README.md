@@ -14,7 +14,7 @@ python3 -m jiji            # ou ./lancer.sh  /  double-clic sur « Lancer Jiji.b
 # ou, avec le fichier unique : python3 jiji.pyz   (construit par ./build.sh)
 ```
 
-Le navigateur s'ouvre sur http://localhost:8765. Au premier lancement, créez le compte administrateur.
+Le navigateur s'ouvre sur http://127.0.0.1:8765. Au premier lancement, créez le compte administrateur.
 
 Options : `--db fichier.db`, `--port 8765`, `--host 0.0.0.0` (partage sur le réseau local), `--no-browser`.
 
