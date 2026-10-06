@@ -11,14 +11,13 @@ import threading
 import time
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from pathlib import Path
+from importlib import resources
 from urllib.parse import parse_qs, urlparse
 
 from . import api
 from .api import ApiError
 from .db import connect, get_settings, init_db
 
-STATIC = Path(__file__).parent / "static"
 SESSION_TTL = 12 * 3600
 COOKIE = "jiji_session"
 MAX_BODY = 5 * 1024 * 1024
@@ -364,10 +363,13 @@ class Handler(BaseHTTPRequestHandler):
 
     def _static(self, path):
         rel = "index.html" if path in ("", "/") else path.lstrip("/")
-        target = (STATIC / rel).resolve()
-        if STATIC.resolve() not in target.parents or not target.is_file():
+        parts = rel.split("/")
+        if any(p in ("", ".", "..") or "\\" in p for p in parts):
             return self._json(404, {"error": "Page introuvable."})
-        ctype = mimetypes.guess_type(target.name)[0] or "application/octet-stream"
+        target = resources.files("jiji").joinpath("static", *parts)
+        if not target.is_file():
+            return self._json(404, {"error": "Page introuvable."})
+        ctype = mimetypes.guess_type(parts[-1])[0] or "application/octet-stream"
         if ctype.startswith("text/") or ctype in ("application/javascript",):
             ctype += "; charset=utf-8"
         self._send(200, target.read_bytes(), ctype)

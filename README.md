@@ -11,6 +11,7 @@ automatiquement **moyennes, rangs, mentions, statistiques de classe et bulletins
 
 ```bash
 python3 -m jiji            # ou ./lancer.sh  /  double-clic sur « Lancer Jiji.bat » (Windows)
+# ou, avec le fichier unique : python3 jiji.pyz   (construit par ./build.sh)
 ```
 
 Le navigateur s'ouvre sur http://localhost:8765. Au premier lancement, créez le compte administrateur.
